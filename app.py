@@ -483,7 +483,10 @@ def render_tab_editor():
 
     # 並び替え・挿入後の選択位置を反映
     default_index = st.session_state.pop("_pending_step_index", None)
-    if default_index is None or default_index >= len(step_labels):
+    if default_index is not None and default_index < len(step_labels):
+        # radioウィジェットの前に値を設定 → widget描画時に反映される
+        st.session_state["step_selector"] = default_index
+    else:
         default_index = 0
 
     # ステップ選択（radio）
@@ -567,6 +570,12 @@ def render_tab_editor():
 
     current_step = steps[selected_index]
     current_step_id = current_step["id"]
+
+    # ステップ切り替え検知 → Canvas再初期化（保存済み注釈を initial_drawing に反映）
+    prev_step_id = st.session_state.get(SESSION_KEYS["current_step_id"])
+    if prev_step_id is not None and prev_step_id != current_step_id:
+        st.session_state[f"canvas_reinit_{current_step_id}"] = True
+
     st.session_state[SESSION_KEYS["current_step_id"]] = current_step_id
 
     # timestamp超過警告
@@ -676,6 +685,23 @@ def render_tab_editor():
                 st.warning("動画ファイルが見つかりません。動画を再アップロードしてください。")
                 placeholder = Image.new("RGB", (640, 360), color=(50, 50, 50))
                 st.image(placeholder, caption="動画を再アップロードしてください", use_container_width=True)
+
+        # ステップ間ナビゲーションボタン
+        nav_col1, nav_col2, nav_spacer = st.columns([1, 1, 8])
+        with nav_col1:
+            if selected_index > 0:
+                if st.button("◀ 前へ", key="nav_prev_step"):
+                    st.session_state["_pending_step_index"] = selected_index - 1
+                    st.rerun()
+            else:
+                st.button("◀ 前へ", key="nav_prev_step", disabled=True)
+        with nav_col2:
+            if selected_index < len(steps) - 1:
+                if st.button("次へ ▶", key="nav_next_step"):
+                    st.session_state["_pending_step_index"] = selected_index + 1
+                    st.rerun()
+            else:
+                st.button("次へ ▶", key="nav_next_step", disabled=True)
 
     with col_right:
         # テキスト編集
