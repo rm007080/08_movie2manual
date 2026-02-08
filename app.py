@@ -212,7 +212,7 @@ def import_json_data(json_text: str, is_saved_json: bool = False) -> ValidationR
 # Gemini プロンプト
 # =============================================================================
 
-GEMINI_PROMPT_TEMPLATE = '''以下の動画の操作手順をJSON形式で出力してください。
+GEMINI_PROMPT_TEMPLATE = '''添付の動画の操作手順をJSON形式で出力してください。
 
 ## 出力形式
 ```json
