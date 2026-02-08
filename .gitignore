@@ -1,0 +1,104 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 仮想環境
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# ====================
+# 環境変数・機密情報
+# ====================
+.env
+.env.local
+.env.*.local
+*.pem
+secrets/
+
+# ====================
+# IDE・エディタ
+# ====================
+.vscode/
+.idea/
+.cursor/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# ====================
+# OS固有
+# ====================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ====================
+# Claude Code（ローカル設定）
+# ====================
+.claude/settings.local.json
+CLAUDE.md
+.claude/
+
+# ドキュメント・メモ
+docs/
+memo/
+
+# ====================
+# テスト・カバレッジ
+# ====================
+tests/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# 一時ファイル
+temp/
+tmp/
+*.tmp
+*.log
+
+# 動画ファイル（大容量）
+*.mp4
+
+# 生成済み出力ファイル
+*.docx
+tests/test_output/
+examples/output/
+manual_images_output_v2/
+
+# テストデータ
+テスト用JSON.json
+
+
