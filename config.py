@@ -94,6 +94,12 @@ DEFAULT_FPS = 30.0
 OUTPUT_DOCX_EXTENSION = ".docx"
 OUTPUT_JSON_EXTENSION = ".json"
 
+# 画像フォーマット設定
+IMAGE_FORMAT_JPEG = "jpeg"
+IMAGE_FORMAT_PNG = "png"
+DEFAULT_IMAGE_FORMAT = IMAGE_FORMAT_JPEG
+JPEG_QUALITY = 95  # 0-100（高いほど高画質・大容量）
+
 # 一時ファイルディレクトリ名
 TEMP_DIR_NAME = "temp"
 

@@ -37,13 +37,16 @@ class TempFileManager:
             self.temp_dir = Path(tempfile.mkdtemp(prefix=self.prefix))
         return self.temp_dir
 
-    def save_frame(self, frame: np.ndarray, filename: str) -> Path:
+    def save_frame(self, frame: np.ndarray, filename: str,
+                   image_format: str = "jpeg", jpeg_quality: int = 95) -> Path:
         """
         フレームを一時ファイルとして保存
 
         Args:
             frame: 保存するフレーム画像（numpy配列）
             filename: 保存するファイル名
+            image_format: 画像フォーマット（"jpeg" or "png"）
+            jpeg_quality: JPEG品質（0-100、image_format="jpeg"の場合のみ有効）
 
         Returns:
             保存されたファイルのパス
@@ -52,7 +55,13 @@ class TempFileManager:
             self.create_temp_dir()
 
         filepath = self.temp_dir / filename
-        cv2.imwrite(str(filepath), frame)
+
+        if image_format == "png":
+            params = [cv2.IMWRITE_PNG_COMPRESSION, 3]
+        else:
+            params = [cv2.IMWRITE_JPEG_QUALITY, jpeg_quality]
+
+        cv2.imwrite(str(filepath), frame, params)
         self.created_files.append(filepath)
         return filepath
 

@@ -32,6 +32,10 @@ from config import (
     MAX_STROKE_WIDTH,
     CANVAS_MIN_HEIGHT,
     SUPPORTED_VIDEO_FORMATS,
+    IMAGE_FORMAT_JPEG,
+    IMAGE_FORMAT_PNG,
+    DEFAULT_IMAGE_FORMAT,
+    JPEG_QUALITY,
     get_initial_session_state,
     get_default_metadata,
     hex_to_bgr,
@@ -810,8 +814,17 @@ def render_tab_export():
 
     st.divider()
 
-    # 生成ボタン
+    # 出力設定
     st.subheader("Word出力")
+
+    image_format = st.radio(
+        "画像フォーマット",
+        options=[IMAGE_FORMAT_JPEG, IMAGE_FORMAT_PNG],
+        format_func=lambda x: "JPEG（容量小・わずかに画質低下）" if x == IMAGE_FORMAT_JPEG else "PNG（高画質・容量大）",
+        index=0 if DEFAULT_IMAGE_FORMAT == IMAGE_FORMAT_JPEG else 1,
+        horizontal=True,
+        key="image_format_radio",
+    )
 
     if st.button("Wordドキュメントを生成", type="primary", key="generate_word_btn"):
         if not valid_steps:
@@ -873,8 +886,13 @@ def render_tab_export():
                                 frame = vp.draw_annotations(frame, formatted_annotations)
 
                         # 一時ファイルに保存
-                        filename = f"step_{step['id']:03d}.jpg"
-                        image_path = temp_manager.save_frame(frame, filename)
+                        ext = "png" if image_format == IMAGE_FORMAT_PNG else "jpg"
+                        filename = f"step_{step['id']:03d}.{ext}"
+                        image_path = temp_manager.save_frame(
+                            frame, filename,
+                            image_format=image_format,
+                            jpeg_quality=JPEG_QUALITY,
+                        )
 
                         steps_data.append({
                             "id": step["id"],

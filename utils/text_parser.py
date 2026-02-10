@@ -77,9 +77,8 @@ def validate_gemini_json(
         result.add_warning("project_name が欠落しています。「無題のプロジェクト」で補完します")
         result.data["project_name"] = "無題のプロジェクト"
 
-    # video_path のチェック・補完
+    # video_path の補完（Gemini出力には含まれないため警告なし）
     if "video_path" not in data or not isinstance(data.get("video_path"), str):
-        result.add_warning("video_path が欠落しています。空文字で補完します")
         result.data["video_path"] = ""
 
     # steps配列のチェック（必須）
